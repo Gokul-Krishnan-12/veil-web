@@ -1,0 +1,373 @@
+{
+  "admins": [
+    {
+      "id": "admin-1",
+      "email": "admin@veil.app",
+      "password_hash": "admin123",
+      "name": "Veil Superadmin"
+    }
+  ],
+  "customers": [
+    {
+      "id": "cust-1",
+      "email": "demo@customer.io",
+      "name": "Demo User",
+      "company": "Demo Corp"
+    },
+    {
+      "id": "uuid-20rsw7q",
+      "created_at": "2026-09-04T04:15:23.631Z",
+      "email": "enterprise@acme.com",
+      "name": "Acme Corp"
+    },
+    {
+      "id": "uuid-74leg7z",
+      "created_at": "2026-09-04T04:15:23.637Z",
+      "email": "solo@creator.io",
+      "name": "Solo Creator"
+    },
+    {
+      "id": "uuid-ssqv379",
+      "created_at": "2026-09-04T04:17:18.406Z",
+      "email": "qa-test@team.org",
+      "name": "QA Team"
+    },
+    {
+      "id": "uuid-jw8f886",
+      "created_at": "2026-09-04T04:31:47.557Z",
+      "email": "buyer@acmecorp.com",
+      "name": "Alice Smith",
+      "company": "Individual"
+    },
+    {
+      "id": "uuid-f59un3b",
+      "created_at": "2026-09-04T05:31:25.902Z",
+      "email": "purchaser@example.com",
+      "name": "Alex Rivera",
+      "company": "Individual"
+    },
+    {
+      "id": "uuid-l9rsvov",
+      "created_at": "2026-09-04T05:51:26.154Z",
+      "email": "purchaser@example.com",
+      "name": "Alex Rivera",
+      "company": "Individual"
+    },
+    {
+      "id": "uuid-s4blg2t",
+      "created_at": "2026-09-04T05:59:57.661Z",
+      "email": "test-revoke@acme.com",
+      "name": "Tester",
+      "company": "Individual"
+    },
+    {
+      "id": "uuid-xxrujaz",
+      "created_at": "2026-09-04T06:03:41.485Z",
+      "email": "tester-qa@acme.com",
+      "name": "Tester QA",
+      "company": "Individual"
+    },
+    {
+      "id": "uuid-ch4t0tf",
+      "created_at": "2026-09-04T06:16:00.730Z",
+      "email": "purchaser@example.com",
+      "name": "Alex Rivera",
+      "company": "Enterprise Customer"
+    },
+    {
+      "id": "uuid-ypf4z6n",
+      "created_at": "2026-09-04T06:17:28.039Z",
+      "email": "purchaser@example.com",
+      "name": "Alex Rivera",
+      "company": "Individual"
+    },
+    {
+      "id": "cust-y0ujai5",
+      "email": "alex@founder.co",
+      "name": "Alex Founder",
+      "company": "Individual",
+      "created_at": "2026-09-07T10:50:46.168Z"
+    },
+    {
+      "id": "cust-fa4p52m",
+      "email": "team@fintechcorp.com",
+      "name": "Fintech Corp",
+      "company": "Enterprise Customer",
+      "created_at": "2026-09-07T10:51:29.535Z"
+    }
+  ],
+  "license_keys": [
+    {
+      "id": "key-vk802b0",
+      "key": "VEIL-ENT20-83B8-192A",
+      "tier": "enterprise",
+      "max_seats": 20,
+      "seats_used": 2,
+      "customer_email": "team@fintechcorp.com",
+      "status": "active",
+      "created_at": "2026-09-07T10:51:29.534Z",
+      "revoked_at": null,
+      "replaced_by_key": null
+    },
+    {
+      "id": "key-3a767o3",
+      "key": "VEIL-PRO-3443-66FC",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 1,
+      "customer_email": "alex@founder.co",
+      "status": "active",
+      "created_at": "2026-09-07T10:50:46.167Z",
+      "revoked_at": null,
+      "replaced_by_key": null
+    },
+    {
+      "id": "uuid-jji7kko",
+      "created_at": "2026-09-04T05:31:25.901Z",
+      "key": "VEIL-PRO-8347-AA74",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 0,
+      "customer_email": "purchaser@example.com",
+      "status": "active"
+    },
+    {
+      "id": "uuid-2ogzlzw",
+      "created_at": "2026-09-04T04:31:47.557Z",
+      "key": "VEIL-PRO-BF24-C2FB",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 1,
+      "customer_email": "buyer@acmecorp.com",
+      "status": "active",
+      "updated_at": "2026-09-04T04:32:02.575Z"
+    },
+    {
+      "id": "uuid-s81y0gj",
+      "created_at": "2026-09-04T04:17:18.429Z",
+      "key": "VEIL-ENT20-FC1E-9CE2",
+      "tier": "enterprise",
+      "max_seats": 20,
+      "seats_used": 0,
+      "customer_email": "qa-test@team.org",
+      "status": "active"
+    },
+    {
+      "id": "uuid-5zxdk6r",
+      "created_at": "2026-09-04T04:17:18.406Z",
+      "key": "VEIL-ENT20-BE8A-2F34",
+      "tier": "enterprise",
+      "max_seats": 20,
+      "seats_used": 1,
+      "customer_email": "qa-test@team.org",
+      "status": "revoked",
+      "updated_at": "2026-09-04T04:17:18.429Z",
+      "revoked_at": "2026-09-04T04:17:18.429Z",
+      "replaced_by_key": "VEIL-ENT20-FC1E-9CE2"
+    },
+    {
+      "id": "uuid-uqgnhkf",
+      "created_at": "2026-09-04T04:15:47.557Z",
+      "key": "VEIL-ENT20-F0F6-53C4",
+      "tier": "enterprise",
+      "max_seats": 20,
+      "seats_used": 0,
+      "customer_email": "enterprise@acme.com",
+      "status": "active"
+    },
+    {
+      "id": "uuid-uluh83r",
+      "created_at": "2026-09-04T04:15:23.637Z",
+      "key": "VEIL-PRO-35B0-23BE",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 0,
+      "customer_email": "solo@creator.io",
+      "status": "active"
+    },
+    {
+      "id": "uuid-s70jlzf",
+      "created_at": "2026-09-04T04:15:23.630Z",
+      "key": "VEIL-ENT20-5199-5E3D",
+      "tier": "enterprise",
+      "max_seats": 20,
+      "seats_used": 1,
+      "customer_email": "enterprise@acme.com",
+      "status": "revoked",
+      "updated_at": "2026-09-04T04:15:47.557Z",
+      "revoked_at": "2026-09-04T04:15:47.557Z",
+      "replaced_by_key": "VEIL-ENT20-F0F6-53C4"
+    },
+    {
+      "id": "key-2",
+      "key": "VEIL-ENT20-C419-72E5",
+      "tier": "enterprise",
+      "max_seats": 20,
+      "seats_used": 3,
+      "customer_email": "enterprise@fintech.io",
+      "status": "active",
+      "created_at": "2026-09-02T04:15:02.258Z",
+      "revoked_at": null,
+      "replaced_by_key": null
+    },
+    {
+      "id": "key-1",
+      "key": "VEIL-PRO-8F21-99A0",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 1,
+      "customer_email": "demo@customer.io",
+      "status": "active",
+      "created_at": "2026-08-30T04:15:02.257Z",
+      "revoked_at": null,
+      "replaced_by_key": null
+    },
+    {
+      "id": "uuid-clfcxik",
+      "created_at": "2026-09-04T05:51:26.154Z",
+      "key": "VEIL-PRO-2325-FB5E",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 0,
+      "customer_email": "purchaser@example.com",
+      "status": "active"
+    },
+    {
+      "id": "uuid-s2k5225",
+      "created_at": "2026-09-04T05:59:57.661Z",
+      "key": "VEIL-PRO-CF73-57A0",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 0,
+      "customer_email": "test-revoke@acme.com",
+      "status": "active"
+    },
+    {
+      "id": "uuid-yr3z00e",
+      "created_at": "2026-09-04T06:03:41.485Z",
+      "key": "VEIL-PRO-CF5A-048D",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 0,
+      "customer_email": "tester-qa@acme.com",
+      "status": "revoked",
+      "revoked_at": "2026-09-04T06:03:41.492Z",
+      "replaced_by_key": "VEIL-PRO-86A8-E8F3",
+      "updated_at": "2026-09-04T06:03:41.492Z"
+    },
+    {
+      "id": "uuid-4a2wn5d",
+      "created_at": "2026-09-04T06:03:41.493Z",
+      "key": "VEIL-PRO-86A8-E8F3",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 0,
+      "customer_email": "tester-qa@acme.com",
+      "status": "active"
+    },
+    {
+      "id": "uuid-s6fonrm",
+      "created_at": "2026-09-04T06:16:00.729Z",
+      "key": "VEIL-ENT20-B782-B1B4",
+      "tier": "enterprise",
+      "max_seats": 20,
+      "seats_used": 3,
+      "customer_email": "purchaser@example.com",
+      "status": "active",
+      "updated_at": "2026-09-04T06:37:14.814Z"
+    },
+    {
+      "id": "uuid-zy9kco8",
+      "created_at": "2026-09-04T06:17:28.038Z",
+      "key": "VEIL-PRO-ECB2-BE2F",
+      "tier": "pro",
+      "max_seats": 1,
+      "seats_used": 0,
+      "customer_email": "purchaser@example.com",
+      "status": "active"
+    }
+  ],
+  "device_activations": [
+    {
+      "id": "dev-1",
+      "license_key_id": "key-1",
+      "device_id": "demo-device-uuid-1",
+      "activated_at": "2026-09-04T04:15:02.258Z"
+    },
+    {
+      "id": "dev-2",
+      "license_key_id": "key-2",
+      "device_id": "team-member-1",
+      "activated_at": "2026-09-04T04:15:02.258Z"
+    },
+    {
+      "id": "dev-3",
+      "license_key_id": "key-2",
+      "device_id": "team-member-2",
+      "activated_at": "2026-09-04T04:15:02.258Z"
+    },
+    {
+      "id": "uuid-cujt26g",
+      "created_at": "2026-09-04T04:15:47.547Z",
+      "license_key_id": "uuid-s70jlzf",
+      "device_id": "macbook-pro-m2",
+      "device_name": "Alex MacBook"
+    },
+    {
+      "id": "uuid-2myztbn",
+      "created_at": "2026-09-04T04:17:18.425Z",
+      "license_key_id": "uuid-5zxdk6r",
+      "device_id": "chrome-extension-device-99",
+      "device_name": "Chrome Browser Client"
+    },
+    {
+      "id": "uuid-pb8dlyz",
+      "created_at": "2026-09-04T04:32:02.575Z",
+      "license_key_id": "uuid-2ogzlzw",
+      "device_id": "user-chrome-laptop-1",
+      "device_name": "Chrome Browser Client"
+    },
+    {
+      "id": "uuid-qze9v6s",
+      "created_at": "2026-09-04T06:27:40.468Z",
+      "license_key_id": "uuid-s6fonrm",
+      "device_id": "dev_jwg651v1mtmk56xb",
+      "device_name": "Chrome Browser Client"
+    },
+    {
+      "id": "uuid-gvq8vcy",
+      "created_at": "2026-09-04T06:29:23.279Z",
+      "license_key_id": "uuid-s6fonrm",
+      "device_id": "dev_9zkh8iu0mtmkq372",
+      "device_name": "Chrome Browser Client"
+    },
+    {
+      "id": "uuid-vnynjnm",
+      "created_at": "2026-09-04T06:37:14.813Z",
+      "license_key_id": "uuid-s6fonrm",
+      "device_id": "dev_dtj0zoujmtml05mz",
+      "device_name": "Chrome Browser Client"
+    },
+    {
+      "id": "dev-g9trq2m",
+      "license_key_id": "key-3a767o3",
+      "device_id": "dev_macbook_pro_01",
+      "device_name": "Chrome Extension Client",
+      "activated_at": "2026-09-07T10:51:06.166Z"
+    },
+    {
+      "id": "dev-6ypdlz6",
+      "license_key_id": "key-vk802b0",
+      "device_id": "dev_team_alice",
+      "device_name": "Chrome Extension Client",
+      "activated_at": "2026-09-07T10:51:42.491Z"
+    },
+    {
+      "id": "dev-8zz8n9o",
+      "license_key_id": "key-vk802b0",
+      "device_id": "dev_team_bob",
+      "device_name": "Chrome Extension Client",
+      "activated_at": "2026-09-07T10:51:42.505Z"
+    }
+  ]
+}
