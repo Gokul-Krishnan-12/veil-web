@@ -153,8 +153,8 @@ export default function DocsPage() {
           </p>
           <div className="docs-step-card">
             <ul style={{ listStyle: 'none', padding: 0, lineHeight: 1.9, fontSize: '14px', color: 'var(--text-muted)' }}>
-              <li><strong>Solo Pro ($29):</strong> Valid for 1 active browser. Ideal for individual creators & founders.</li>
-              <li><strong>Enterprise ($199):</strong> Allows up to 20 active browsers under one shared key.</li>
+              <li><strong>Personal Lifetime:</strong> Valid for up to 3 active browser seats with full lifetime access. Ideal for individual creators & founders across their laptop and workstations.</li>
+              <li><strong>Enterprise:</strong> Allows up to 30 active team browser seats under one shared cryptographic key.</li>
               <li><strong>Offline Resilience:</strong> Once activated, the license is saved directly in Chrome extension local storage. No continuous background calls needed.</li>
             </ul>
           </div>

@@ -3,8 +3,11 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { initDemoSandbox } from '@/components/demo-engine';
+import { useCurrency } from '@/components/CurrencyContext';
 
 export default function DemoPage() {
+  const { formatPrice } = useCurrency();
+
   useEffect(() => {
     const cleanup = initDemoSandbox();
     return () => {
@@ -193,7 +196,7 @@ export default function DemoPage() {
               <span>📡</span> Test Screen Share Detection
             </button>
             <Link href="/checkout?tier=pro" className="btn btn-primary btn-sm">
-              Unlock Pro ($29)
+              Unlock Pro ({formatPrice('pro')})
             </Link>
           </div>
         </div>

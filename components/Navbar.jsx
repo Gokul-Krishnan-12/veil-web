@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useCurrency } from './CurrencyContext';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { formatPrice } = useCurrency();
 
   const links = [
     { href: '/', label: 'Overview' },
@@ -37,10 +39,11 @@ export default function Navbar() {
 
         <div className="nav-actions">
           <Link href="/checkout?tier=pro" className="btn btn-primary btn-sm">
-            Unlock Pro ($29)
+            Unlock Pro ({formatPrice('pro')})
           </Link>
         </div>
       </div>
     </nav>
   );
 }
+

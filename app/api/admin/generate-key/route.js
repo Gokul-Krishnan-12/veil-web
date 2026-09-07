@@ -8,13 +8,13 @@ export async function POST(req) {
     const reqTier = (tier || "pro").toLowerCase();
 
     let validTier = "pro";
-    let maxSeats = 1;
-    let label = "Personal Lifetime (1 Seat)";
+    let maxSeats = 3;
+    let label = "Personal Lifetime (3 Browsers)";
 
     if (reqTier === "enterprise") {
       validTier = "enterprise";
-      maxSeats = 20;
-      label = "Enterprise (20 Seats)";
+      maxSeats = 30;
+      label = "Enterprise (30 Seats)";
     } else if (reqTier === "trial" || reqTier === "free_trial" || reqTier === "free") {
       validTier = "trial";
       maxSeats = 1;

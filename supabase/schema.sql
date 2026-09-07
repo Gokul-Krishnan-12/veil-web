@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS license_keys (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   key TEXT UNIQUE NOT NULL,
   tier TEXT NOT NULL CHECK (tier IN ('pro', 'enterprise')),
-  max_seats INT NOT NULL DEFAULT 1,
+  max_seats INT NOT NULL DEFAULT 3,
   seats_used INT NOT NULL DEFAULT 0,
   customer_email TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'revoked')),

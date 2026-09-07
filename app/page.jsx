@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import HomePricing from '@/components/HomePricing';
 
 export const metadata = {
   title: 'Veil — Blur Anything on the Web in Real Time',
@@ -145,74 +146,13 @@ export default function HomePage() {
           <div className="feature-card">
             <div className="feature-icon-wrapper">🔑</div>
             <h3>Cryptographic License Engine</h3>
-            <p>Cryptographic single-user lifetime purchases and 20-seat enterprise team license keys with automated seat claim enforcement and zero recurring calls.</p>
+            <p>Cryptographic 3-browser personal lifetime licenses and 30-seat enterprise team license keys with automated seat claim enforcement and zero recurring calls.</p>
           </div>
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section className="pricing-section" id="pricing">
-        <div className="section-header">
-          <div className="pill-badge emerald">Simple, Transparent Pricing</div>
-          <h2 className="section-title">Pay once. Own lifetime privacy.</h2>
-          <p className="section-subtitle">No monthly subscriptions. Free updates forever.</p>
-        </div>
-
-        <div className="pricing-grid">
-          {/* Solo Plan */}
-          <div className="pricing-card">
-            <div className="pricing-tier-name">Personal Lifetime</div>
-            <p className="pricing-desc">For individual founders, creators, and professionals recording videos or doing client calls.</p>
-            
-            <div className="pricing-price-box">
-              <span className="price-currency">$</span>
-              <span className="price-amount">29</span>
-              <span className="price-period">one-time / lifetime</span>
-            </div>
-
-            <ul className="pricing-features-list">
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Single user (1 browser seat binding)</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Unlimited element & text blurring</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Automated PII masking (Cards, Emails, Keys)</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Live WebRTC screen share auto-detection</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Regional drag-to-blur boxes</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> SPA persistent domain rules</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Free updates forever</li>
-            </ul>
-
-            <Link href="/checkout?tier=pro" className="btn btn-secondary" style={{ width: '100%' }}>
-              Buy Personal Key ($29)
-            </Link>
-          </div>
-
-          {/* Enterprise Plan */}
-          <div className="pricing-card featured">
-            <div className="pricing-popular-badge">MOST POPULAR FOR TEAMS</div>
-            <div className="pricing-tier-name">Enterprise Lifetime</div>
-            <p className="pricing-desc">For sales engineering teams, customer support hubs, and organizations protecting customer data.</p>
-            
-            <div className="pricing-price-box">
-              <span className="price-currency">$</span>
-              <span className="price-amount">199</span>
-              <span className="price-period">one-time / lifetime</span>
-            </div>
-
-            <ul className="pricing-features-list">
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> <strong>Up to 20 users / browser seats</strong> with one key</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Centralized team seat management</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> 1-Click Revoke & Reissue API support</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Automated PII & screen share protection</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Tab privacy disguise engine</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Dedicated priority email support</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> GDPR, HIPAA & SOC2 compliance ready</li>
-            </ul>
-
-            <Link href="/checkout?tier=enterprise" className="btn btn-primary" style={{ width: '100%' }}>
-              Buy Enterprise Key ($199 — 20 Seats)
-            </Link>
-          </div>
-        </div>
-      </section>
+      <HomePricing />
     </div>
   );
 }

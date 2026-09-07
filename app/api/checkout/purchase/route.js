@@ -16,7 +16,7 @@ export async function POST(req) {
     }
 
     const validTier = (tier || "pro").toLowerCase() === "enterprise" ? "enterprise" : "pro";
-    const maxSeats = validTier === "enterprise" ? 20 : 1;
+    const maxSeats = validTier === "enterprise" ? 30 : 3;
     const priceAmount = validTier === "enterprise" ? 199 : 29;
 
     // Generate cryptographic key

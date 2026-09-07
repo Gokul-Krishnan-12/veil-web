@@ -785,8 +785,8 @@ export default function AdminPortalPage() {
                       onChange={(e) => setGenTier(e.target.value)}
                       style={{ colorScheme: 'dark', backgroundColor: '#0f172a', color: '#f8fafc' }}
                     >
-                      <option value="pro" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Solo Pro (1 Browser — $29.00)</option>
-                      <option value="enterprise" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Enterprise (20 Seats — $199.00)</option>
+                      <option value="pro" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Personal Lifetime (3 Browsers — $29.00)</option>
+                      <option value="enterprise" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Enterprise (30 Seats — $199.00)</option>
                       <option value="trial" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Free Trial (1 Browser — $0.00 Free)</option>
                     </select>
                   </div>

@@ -1,6 +1,7 @@
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { CurrencyProvider } from '@/components/CurrencyContext';
 
 export const metadata = {
   title: 'Veil — Real-Time Browser Screen Privacy & Obfuscation',
@@ -28,9 +29,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <CurrencyProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </CurrencyProvider>
       </body>
     </html>
   );

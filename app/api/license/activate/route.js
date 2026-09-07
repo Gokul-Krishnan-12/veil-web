@@ -46,8 +46,8 @@ export async function POST(req) {
 
     // Verify browser seat capacity
     if (keyRecord.seats_used >= keyRecord.max_seats) {
-      const quotaMsg = keyRecord.max_seats === 1
-        ? "Single-User Limit: This license is already in use on another browser. Deactivate on the other browser or upgrade to Enterprise."
+      const quotaMsg = keyRecord.max_seats <= 3
+        ? `Browser Seat Limit: This license is already in use on ${keyRecord.max_seats} browsers. Deactivate on one of the other browsers or upgrade to Enterprise.`
         : `Enterprise Quota Reached: All ${keyRecord.max_seats}/${keyRecord.max_seats} browser seats are currently assigned.`;
       return NextResponse.json({ success: false, message: quotaMsg }, { status: 409 });
     }

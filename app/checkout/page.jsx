@@ -3,11 +3,14 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { useCurrency } from '@/components/CurrencyContext';
+import CurrencySelector from '@/components/CurrencySelector';
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const initialTier = searchParams.get('tier') === 'enterprise' ? 'enterprise' : 'pro';
 
+  const { formatPrice, currencyData, isPpp } = useCurrency();
   const [tier, setTier] = useState(initialTier);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -23,8 +26,8 @@ function CheckoutContent() {
     else if (qTier === 'pro') setTier('pro');
   }, [searchParams]);
 
-  const price = tier === 'enterprise' ? 199 : 29;
-  const seats = tier === 'enterprise' ? 20 : 1;
+  const seats = tier === 'enterprise' ? 30 : 3;
+  const currentFormattedPrice = formatPrice(tier);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -125,7 +128,38 @@ function CheckoutContent() {
         </div>
       ) : (
         /* Checkout Form */
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
+        <div>
+          <div style={{
+            background: 'rgba(16, 185, 129, 0.08)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            borderRadius: '12px',
+            padding: '12px 18px',
+            marginBottom: '24px',
+            fontSize: '13px',
+            color: '#6ee7b7',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '8px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>🎉</span>
+              <span><strong>Limited Launch Special:</strong> 40% discount applied automatically. Pay once, own forever with 0 recurring fees.</span>
+            </div>
+            <span style={{ fontSize: '11px', background: 'rgba(16, 185, 129, 0.2)', padding: '2px 8px', borderRadius: '999px', fontWeight: 700 }}>
+              0 MONTHLY FEES
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Currency:</span>
+              <CurrencySelector compact />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
           {/* Plan Selector & Details */}
           <div className="form-panel" style={{ padding: '32px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '20px' }}>1. Select Your License Tier</h3>
@@ -144,9 +178,19 @@ function CheckoutContent() {
                   color: 'inherit'
                 }}
               >
-                <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)' }}>SOLO PRO</div>
-                <div style={{ fontSize: '26px', fontWeight: 800, color: '#ffffff', margin: '4px 0' }}>$29</div>
-                <div style={{ fontSize: '12px', color: 'var(--accent-emerald)' }}>1 Browser Seat</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)' }}>PERSONAL PRO</div>
+                  <span className="pill-badge emerald" style={{ fontSize: '9px', padding: '1px 5px' }}>
+                    {isPpp ? 'PARITY' : 'SAVE 40%'}
+                  </span>
+                </div>
+                <div style={{ fontSize: '22px', fontWeight: 800, color: '#ffffff', margin: '6px 0', display: 'flex', alignItems: 'baseline', gap: '6px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '14px', textDecoration: 'line-through', color: 'var(--text-dim)', fontWeight: 600 }}>
+                    {formatPrice('pro', true)}
+                  </span>
+                  <span>{formatPrice('pro')}</span>
+                </div>
+                <div style={{ fontSize: '11.5px', color: 'var(--accent-emerald)' }}>3 Browser Seats</div>
               </button>
 
               <button
@@ -162,9 +206,19 @@ function CheckoutContent() {
                   color: 'inherit'
                 }}
               >
-                <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)' }}>ENTERPRISE</div>
-                <div style={{ fontSize: '26px', fontWeight: 800, color: '#ffffff', margin: '4px 0' }}>$199</div>
-                <div style={{ fontSize: '12px', color: 'var(--accent-cyan)' }}>20 Team Seats</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)' }}>ENTERPRISE</div>
+                  <span className="pill-badge emerald" style={{ fontSize: '9px', padding: '1px 5px' }}>
+                    {isPpp ? 'PARITY' : 'SAVE 33%'}
+                  </span>
+                </div>
+                <div style={{ fontSize: '22px', fontWeight: 800, color: '#ffffff', margin: '6px 0', display: 'flex', alignItems: 'baseline', gap: '6px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '14px', textDecoration: 'line-through', color: 'var(--text-dim)', fontWeight: 600 }}>
+                    {formatPrice('enterprise', true)}
+                  </span>
+                  <span>{formatPrice('enterprise')}</span>
+                </div>
+                <div style={{ fontSize: '11.5px', color: 'var(--accent-cyan)' }}>30 Team Seats</div>
               </button>
             </div>
 
@@ -231,7 +285,7 @@ function CheckoutContent() {
 
               <div style={{ borderTop: '1px solid var(--card-border)', paddingTop: '16px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Total due today:</span>
-                <span style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff' }}>${price}</span>
+                <span style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff' }}>{currentFormattedPrice}</span>
               </div>
 
               <button
@@ -240,11 +294,12 @@ function CheckoutContent() {
                 className="btn btn-primary"
                 style={{ width: '100%', padding: '14px', fontSize: '15px' }}
               >
-                {loading ? 'Generating Secure Key...' : `Pay $${price} & Receive Lifetime Key`}
+                {loading ? 'Generating Secure Key...' : `Pay ${currentFormattedPrice} & Receive Lifetime Key`}
               </button>
             </form>
           </div>
         </div>
+      </div>
       )}
     </div>
   );
