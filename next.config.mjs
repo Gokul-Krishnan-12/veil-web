@@ -21,6 +21,8 @@ const nextConfig = {
       { source: "/pricing.html", destination: "/pricing" },
       { source: "/docs.html", destination: "/docs" },
       { source: "/use-cases.html", destination: "/use-cases" },
+      { source: "/privacy.html", destination: "/privacy" },
+      { source: "/privacy-policy", destination: "/privacy" },
       { source: "/admin", destination: "/v-sec-7x92kp/admin" }
     ];
   }

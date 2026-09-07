@@ -36,6 +36,7 @@ export default function Footer() {
             <span style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.6 }}>AES-256 Checksummed Keys</span>
             <span style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.6 }}>Zero Telemetry Architecture</span>
             <span style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.6 }}>Local-First Privacy Shield</span>
+            <Link href="/privacy" style={{ color: 'var(--accent-cyan)', fontWeight: 500, fontSize: '14px', marginTop: '4px' }}>Privacy Policy</Link>
           </div>
         </div>
       </div>
