@@ -29,7 +29,7 @@ export default function UseCasesPage() {
       icon: '🏦',
       title: 'Fintech & Customer Support Hubs',
       desc: 'Support agents can diagnose customer issues on live calls while masking full 16-digit credit card numbers, CVVs, and bank routing numbers.',
-      features: ['Regex Luhn-algorithm card detection', 'Multi-seat team licenses with Supabase', 'Restricted access key controls']
+      features: ['Regex Luhn-algorithm card detection', 'Multi-seat cryptographic team licenses', 'Restricted access key controls']
     },
     {
       icon: '🔴',

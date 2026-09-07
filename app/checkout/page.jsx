@@ -77,8 +77,8 @@ function CheckoutContent() {
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginTop: '6px' }}>
           {purchasedKey
-            ? 'Your license key has been minted in the Supabase registry. Activate it in your extension below.'
-            : 'One-time payment. Instant cryptographic key generation stored in Supabase.'}
+            ? 'Your license key has been minted in our secure registry. Activate it in your extension below.'
+            : 'One-time payment. Instant cryptographic key generation.'}
         </p>
       </div>
 
@@ -172,7 +172,7 @@ function CheckoutContent() {
               <h4 style={{ fontSize: '14px', fontWeight: 700, marginBottom: '10px', color: '#ffffff' }}>What is included:</h4>
               <ul style={{ listStyle: 'none', padding: 0, fontSize: '13px', color: 'var(--text-muted)', lineHeight: 2 }}>
                 <li>✓ Cryptographically signed lifetime key</li>
-                <li>✓ Bound to {seats} seat{seats > 1 ? 's' : ''} in Supabase Cloud registry</li>
+                <li>✓ Bound to {seats} seat{seats > 1 ? 's' : ''} in our encrypted registry</li>
                 <li>✓ Automated PII & screen share detection</li>
                 <li>✓ Free updates forever with zero ongoing subscriptions</li>
               </ul>
@@ -240,7 +240,7 @@ function CheckoutContent() {
                 className="btn btn-primary"
                 style={{ width: '100%', padding: '14px', fontSize: '15px' }}
               >
-                {loading ? 'Generating Key in Supabase...' : `Pay $${price} & Receive Lifetime Key`}
+                {loading ? 'Generating Secure Key...' : `Pay $${price} & Receive Lifetime Key`}
               </button>
             </form>
           </div>

@@ -144,7 +144,7 @@ export default function HomePage() {
 
           <div className="feature-card">
             <div className="feature-icon-wrapper">🔑</div>
-            <h3>Supabase License Engine</h3>
+            <h3>Cryptographic License Engine</h3>
             <p>Cryptographic single-user lifetime purchases and 20-seat enterprise team license keys with automated seat claim enforcement and zero recurring calls.</p>
           </div>
         </div>
@@ -199,7 +199,7 @@ export default function HomePage() {
 
             <ul className="pricing-features-list">
               <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> <strong>Up to 20 users / browser seats</strong> with one key</li>
-              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Centralized team seat management in Supabase</li>
+              <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Centralized team seat management</li>
               <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> 1-Click Revoke & Reissue API support</li>
               <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Automated PII & screen share protection</li>
               <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Tab privacy disguise engine</li>

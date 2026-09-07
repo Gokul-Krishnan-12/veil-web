@@ -206,7 +206,7 @@ export default function PrivacyPolicyPage() {
           </p>
           <ul style={{ paddingLeft: '20px', lineHeight: 1.8, fontSize: '14px', color: 'var(--text-muted)' }}>
             <li>Payments are processed securely by our certified PCI-DSS payment gateways (Stripe / ExtensionPay). Veil never sees, stores, or handles your raw credit card numbers.</li>
-            <li>License key verification queries our secure Supabase API to validate active seats. Only the cryptographic key string and a randomized client device ID are exchanged.</li>
+            <li>License key verification queries our secure encrypted verification API to validate active seats. Only the cryptographic key string and a randomized client device ID are exchanged.</li>
           </ul>
         </section>
 

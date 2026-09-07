@@ -14,7 +14,7 @@ export default function PricingPage() {
           Invest once. Protect every screen share forever.
         </h1>
         <p className="section-subtitle" style={{ fontSize: '18px', maxWidth: '640px', margin: '12px auto 0' }}>
-          All purchases generate cryptographic license keys tracked directly in our Supabase Cloud registry. No ongoing phone-home telemetry needed.
+          All purchases generate cryptographic license keys tracked securely in our encrypted registry. No ongoing phone-home telemetry needed.
         </p>
       </div>
 
@@ -60,7 +60,7 @@ export default function PricingPage() {
 
           <ul className="pricing-features-list">
             <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> <strong>Up to 20 users / browser seats</strong> with one key</li>
-            <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Centralized team seat management in Supabase</li>
+            <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Centralized team seat management</li>
             <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> 1-Click Revoke & Reissue API support</li>
             <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Automated PII & screen share protection</li>
             <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Tab privacy disguise engine</li>
@@ -85,7 +85,7 @@ export default function PricingPage() {
           <div className="feature-card">
             <h4 style={{ fontSize: '17px', fontWeight: 700, marginBottom: '6px' }}>How do I activate my extension after purchasing?</h4>
             <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
-              Immediately upon checkout, your cryptographic license key is generated in our Supabase database and displayed on screen. Open your Veil Chrome extension, paste the key into the popup, and click Activate.
+              Immediately upon checkout, your cryptographic license key is generated securely and displayed on screen. Open your Veil Chrome extension, paste the key into the popup, and click Activate.
             </p>
           </div>
 
