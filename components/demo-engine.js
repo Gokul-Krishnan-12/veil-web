@@ -98,19 +98,19 @@ export function initDemoSandbox() {
     });
   }
 
-  // Draggability
+  // Draggability (Mouse and Touch support)
   if (dock) {
     let isDragging = false;
     let startX = 0, startY = 0;
     let initialLeft = 0, initialTop = 0;
     const handle = document.getElementById("dock-drag-handle") || dock;
 
-    handle.addEventListener("mousedown", (e) => {
-      if (e.target.closest(".dock-btn") || e.target.closest(".dock-close")) return;
+    const startDrag = (clientX, clientY, target) => {
+      if (target.closest(".dock-btn") || target.closest(".dock-close")) return false;
       isDragging = true;
       dock.classList.add("is-dragging");
-      startX = e.clientX;
-      startY = e.clientY;
+      startX = clientX;
+      startY = clientY;
       const rect = dock.getBoundingClientRect();
       initialLeft = rect.left;
       initialTop = rect.top;
@@ -118,28 +118,72 @@ export function initDemoSandbox() {
       dock.style.transform = "none";
       dock.style.left = `${initialLeft}px`;
       dock.style.top = `${initialTop}px`;
-      e.preventDefault();
-    });
+      return true;
+    };
 
-    const onMouseMove = (e) => {
+    const moveDrag = (clientX, clientY) => {
       if (!isDragging) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-      const newLeft = Math.max(12, Math.min(window.innerWidth - dock.offsetWidth - 12, initialLeft + dx));
-      const newTop = Math.max(12, Math.min(window.innerHeight - dock.offsetHeight - 12, initialTop + dy));
+      const dx = clientX - startX;
+      const dy = clientY - startY;
+      const maxLeft = Math.max(8, window.innerWidth - dock.offsetWidth - 8);
+      const maxTop = Math.max(8, window.innerHeight - dock.offsetHeight - 8);
+      const newLeft = Math.max(8, Math.min(maxLeft, initialLeft + dx));
+      const newTop = Math.max(8, Math.min(maxTop, initialTop + dy));
       dock.style.left = `${newLeft}px`;
       dock.style.top = `${newTop}px`;
     };
 
-    const onMouseUp = () => {
+    const endDrag = () => {
       if (isDragging) {
         isDragging = false;
         dock.classList.remove("is-dragging");
       }
     };
 
+    // Mouse handlers
+    handle.addEventListener("mousedown", (e) => {
+      if (startDrag(e.clientX, e.clientY, e.target)) {
+        e.preventDefault();
+      }
+    });
+
+    const onMouseMove = (e) => moveDrag(e.clientX, e.clientY);
+    const onMouseUp = () => endDrag();
+
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
+
+    // Touch handlers for mobile responsiveness
+    handle.addEventListener("touchstart", (e) => {
+      if (e.touches && e.touches.length > 0) {
+        if (startDrag(e.touches[0].clientX, e.touches[0].clientY, e.target)) {
+          e.preventDefault();
+        }
+      }
+    }, { passive: false });
+
+    const onTouchMove = (e) => {
+      if (!isDragging) return;
+      if (e.touches && e.touches.length > 0) {
+        moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+        e.preventDefault();
+      }
+    };
+
+    const onTouchEnd = () => endDrag();
+
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
+    document.addEventListener("touchend", onTouchEnd);
+    document.addEventListener("touchcancel", onTouchEnd);
+
+    // Re-clamp on window resize/orientationchange
+    window.addEventListener("resize", () => {
+      const rect = dock.getBoundingClientRect();
+      const maxLeft = Math.max(8, window.innerWidth - dock.offsetWidth - 8);
+      const maxTop = Math.max(8, window.innerHeight - dock.offsetHeight - 8);
+      if (rect.left > maxLeft) dock.style.left = `${maxLeft}px`;
+      if (rect.top > maxTop) dock.style.top = `${maxTop}px`;
+    });
   }
 
   // Master Shield

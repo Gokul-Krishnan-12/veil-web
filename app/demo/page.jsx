@@ -16,11 +16,11 @@ export default function DemoPage() {
     <div style={{ position: 'relative', minHeight: '100vh' }}>
       {/* Simulated WebRTC Screen Sharing Status Bar */}
       <div id="screenshare-status-bar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '16px', animation: 'pulse 1.5s infinite' }}>🔴</span>
+        <div className="screenshare-bar-content">
+          <span style={{ fontSize: '16px', animation: 'pulse 1.5s infinite', flexShrink: 0 }}>🔴</span>
           <span><strong>Live Screen Sharing Active</strong> (Google Meet / Zoom presentation simulated) — All sensitive PII automatically veiled.</span>
         </div>
-        <span style={{ fontSize: '11px', background: 'rgba(0,0,0,0.3)', padding: '3px 8px', borderRadius: '4px' }}>
+        <span className="screenshare-badge">
           Click 📡 on toolbar to Stop
         </span>
       </div>
@@ -172,34 +172,23 @@ export default function DemoPage() {
       </div>
 
       {/* Main Sandbox Dashboard Layout */}
-      <div style={{ maxWidth: '1200px', margin: '30px auto 140px', padding: '0 24px' }}>
+      <div className="demo-container">
         {/* Dashboard Header */}
-        <div style={{
-          background: 'var(--card-bg)',
-          border: '1px solid var(--card-border)',
-          borderRadius: '16px',
-          padding: '24px 32px',
-          marginBottom: '24px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <img src="/assets/icon48.png" alt="Veil Logo" style={{ width: '44px', height: '44px', borderRadius: '12px' }} />
+        <div className="demo-header-card">
+          <div className="demo-header-left">
+            <img src="/assets/icon48.png" alt="Veil Logo" className="demo-header-logo" />
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h1 style={{ fontSize: '22px', fontWeight: 800 }}>Veil — Live Extension Sandbox</h1>
+              <div className="demo-header-title-row">
+                <h1 className="demo-header-title">Veil — Live Extension Sandbox</h1>
                 <span className="pill-badge emerald" style={{ fontSize: '11px' }}>Extension Simulator</span>
               </div>
-              <p style={{ color: 'var(--text-muted)', fontSize: '13px', marginTop: '2px' }}>
+              <p className="demo-header-subtitle">
                 Synthetic customer data, PCI-DSS credentials, and WebRTC streaming test triggers.
               </p>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="demo-header-actions">
             <button id="btn-simulate-screenshare" className="btn btn-secondary btn-sm">
               <span>📡</span> Test Screen Share Detection
             </button>
@@ -210,122 +199,95 @@ export default function DemoPage() {
         </div>
 
         {/* Workflow Instructions Banner */}
-        <div style={{
-          background: 'rgba(99, 102, 241, 0.08)',
-          border: '1px solid rgba(99, 102, 241, 0.25)',
-          borderRadius: '12px',
-          padding: '16px 20px',
-          marginBottom: '28px',
-          fontSize: '13px',
-          color: '#c7d2fe',
-          lineHeight: 1.7
-        }}>
-          <div style={{ fontWeight: 700, marginBottom: '6px', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div className="demo-guide-card">
+          <div className="demo-guide-title">
             <span>⚡</span> Interactive Testing Guide:
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px', marginTop: '8px' }}>
+          <div className="demo-guide-grid">
             <div>
-              <strong>1. Floating Toolbar:</strong> Drag the pill dock at the bottom anywhere on your screen.
+              <strong>1. Floating Toolbar:</strong> Drag or touch the pill dock at the bottom anywhere on your screen.
             </div>
             <div>
-              <strong>2. Element Picker:</strong> Click the target icon on the toolbar. Hover any element to see the selection ring. Hold <kbd>Shift</kbd> to blur a whole table row!
+              <strong>2. Element Picker:</strong> Tap the target icon on the toolbar. Tap any element to blur. Hold <kbd>Shift</kbd> on desktop to blur whole rows!
             </div>
             <div>
-              <strong>3. Automated PII:</strong> Click the shield icon on the toolbar to auto-mask emails, cards, and secrets.
+              <strong>3. Automated PII:</strong> Tap the shield icon on the toolbar to auto-mask emails, cards, and secrets.
             </div>
             <div>
-              <strong>4. Master Switch:</strong> Click the eye-slash icon to instantly clear all blurs, then click again to restore.
+              <strong>4. Master Switch:</strong> Tap the eye-slash icon to instantly clear all blurs, then tap again to restore.
             </div>
           </div>
         </div>
 
         {/* Confidential Credentials Strip */}
-        <div style={{
-          background: 'rgba(239, 68, 68, 0.05)',
-          border: '1px solid rgba(239, 68, 68, 0.2)',
-          borderRadius: '12px',
-          padding: '16px 24px',
-          marginBottom: '28px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="demo-confidential-strip">
+          <div className="demo-confidential-left">
             <span style={{ fontSize: '20px' }}>🔐</span>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 700, color: '#f87171', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Confidential Staging Environment</div>
-              <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Contains production Stripe API secret keys and live billing credentials</div>
+              <div className="demo-confidential-tag">Confidential Staging Environment</div>
+              <div className="demo-confidential-desc">Contains production Stripe API secret keys and live billing credentials</div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <div>
-              <div style={{ fontSize: '10px', fontWeight: 700, color: '#f87171', textTransform: 'uppercase' }}>Production API Secret</div>
-              <div className="pii-sample" style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#ffffff', fontSize: '13px', marginTop: '2px' }}>
-                sk_live_99a8x003b7194f
-              </div>
+          <div>
+            <div className="demo-secret-label">Production API Secret</div>
+            <div className="pii-sample demo-secret-value">
+              sk_live_99a8x003b7194f
             </div>
           </div>
         </div>
 
         {/* Metrics Cards Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '28px' }}>
+        <div className="demo-metrics-grid">
           <div className="sandbox-card">
-            <div style={{ fontSize: '12px', color: 'var(--text-dim)', textTransform: 'uppercase', fontBold: 600 }}>Total ARR Under Management</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-dim)', textTransform: 'uppercase', fontWeight: 600 }}>Total ARR Under Management</div>
             <div className="pii-sample" style={{ fontSize: '32px', fontWeight: 800, margin: '8px 0', color: '#34d399' }}>$4,890,250</div>
             <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>+24.8% YoY Enterprise Growth</div>
           </div>
 
           <div className="sandbox-card">
-            <div style={{ fontSize: '12px', color: 'var(--text-dim)', textTransform: 'uppercase', fontBold: 600 }}>Lead Compliance Officer</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-dim)', textTransform: 'uppercase', fontWeight: 600 }}>Lead Compliance Officer</div>
             <div className="pii-sample" style={{ fontSize: '18px', fontWeight: 700, margin: '8px 0', color: '#ffffff' }}>sarah.connor@acme-corp.com</div>
             <div className="pii-sample" style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Direct Desk: +1 (415) 890-3321</div>
           </div>
 
           <div className="sandbox-card">
-            <div style={{ fontSize: '12px', color: 'var(--text-dim)', textTransform: 'uppercase', fontBold: 600 }}>Settlement Payout Card</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-dim)', textTransform: 'uppercase', fontWeight: 600 }}>Settlement Payout Card</div>
             <div className="pii-sample" style={{ fontSize: '20px', fontWeight: 700, margin: '8px 0', fontFamily: 'var(--font-mono)', color: '#ffffff' }}>4532 •••• •••• 9812</div>
             <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Exp: 09/29 • Visa Signature Commercial</div>
           </div>
         </div>
 
         {/* Customer Records Table */}
-        <div className="table-wrapper" style={{ marginBottom: '32px', background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '16px', overflow: 'hidden' }}>
-          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--card-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h2 style={{ fontSize: '16px', fontWeight: 700 }}>Confidential Enterprise Customer Registry</h2>
+        <div className="demo-table-wrapper">
+          <div className="demo-table-header">
+            <div className="demo-table-header-left">
+              <div className="demo-table-title-row">
+                <h2 className="demo-table-title">Confidential Enterprise Customer Registry</h2>
                 <span className="status-pill active" style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '999px', background: 'rgba(16, 185, 129, 0.1)', color: '#34d399' }}>
                   <span className="status-dot"></span> 4 Accounts
                 </span>
               </div>
-              <p style={{ color: 'var(--text-dim)', fontSize: '12px', marginTop: '3px' }}>
-                Live production account ledger. Click any cell to test Element Picker, or hold <kbd style={{ background: 'rgba(255,255,255,0.1)', padding: '1px 6px', borderRadius: '4px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>Shift</kbd> to blur the entire row.
+              <p className="demo-table-desc">
+                Live production account ledger. Tap any cell to test Element Picker, or hold <kbd style={{ background: 'rgba(255,255,255,0.1)', padding: '1px 6px', borderRadius: '4px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>Shift</kbd> to blur the entire row.
               </p>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div className="demo-table-actions">
               <input
                 type="text"
                 id="demo-table-search"
+                className="demo-table-search-input"
                 placeholder="Search accounts or emails..."
-                style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid var(--card-border)',
-                  borderRadius: '999px',
-                  padding: '7px 16px',
-                  color: '#fff',
-                  fontSize: '12.5px',
-                  outline: 'none',
-                  width: '220px'
-                }}
               />
               <span className="pill-badge" style={{ fontSize: '11px' }}>Shift+Click: Whole Row</span>
             </div>
           </div>
 
-          <div style={{ overflowX: 'auto' }}>
+          <div className="demo-table-scroll-hint">
+            <span>⇄ Swipe or scroll horizontally to view all columns</span>
+          </div>
+
+          <div className="table-responsive">
             <table className="admin-table" id="sandbox-customer-table">
               <thead>
                 <tr>
@@ -469,15 +431,15 @@ export default function DemoPage() {
             Highlight any text across the boxes below to test text selection blur. A floating pill will appear allowing you to blur just the highlighted words without altering surrounding layout.
           </p>
 
-          <div style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '10px', padding: '18px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+          <div style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '10px', padding: '16px' }}>
+            <div className="demo-text-test-grid">
               <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '14px', borderRadius: '8px', fontSize: '13px', lineHeight: 1.6 }}>
                 <strong style={{ color: '#a5b4fc', display: 'block', marginBottom: '6px' }}>Internal Security Audit Log</strong>
-                Security Token <span className="pii-sample">sk_live_99a8x003b7194f</span> was rotated on 2026-09-01 by <span className="pii-sample">devops@acme-corp.com</span>. Verified zero leaks during Google Meet client demo.
+                Security Token <span className="pii-sample font-mono">sk_live_99a8x003b7194f</span> was rotated on 2026-09-01 by <span className="pii-sample">devops@acme-corp.com</span>. Verified zero leaks during Google Meet client demo.
               </div>
               <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '14px', borderRadius: '8px', fontSize: '13px', lineHeight: 1.6 }}>
                 <strong style={{ color: '#a5b4fc', display: 'block', marginBottom: '6px' }}>Settlement Wire Instructions</strong>
-                Wiring account routing <span className="pii-sample">021000021</span> account <span className="pii-sample">992837102</span> at Silicon Valley Reserve Bank. Destination verified for Acme Financial Technologies.
+                Wiring account routing <span className="pii-sample font-mono">021000021</span> account <span className="pii-sample font-mono">992837102</span> at Silicon Valley Reserve Bank. Destination verified for Acme Financial Technologies.
               </div>
             </div>
           </div>
