@@ -15,14 +15,11 @@ function CheckoutContent() {
   const [tier, setTier] = useState(initialTier);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [cardNumber, setCardNumber] = useState('4242 •••• •••• 4242');
-  const [loading, setLoading] = useState(false);
   const [lsLoading, setLsLoading] = useState(false);
   const [verifyingOrder, setVerifyingOrder] = useState(false);
   const [error, setError] = useState('');
   const [purchasedKey, setPurchasedKey] = useState(null);
   const [copied, setCopied] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('lemonsqueezy'); // 'lemonsqueezy' | 'instant'
 
   // Initialize Lemon.js event listener for overlay checkout completion
   useEffect(() => {
@@ -139,41 +136,6 @@ function CheckoutContent() {
     } catch (err) {
       setError(err.message || 'An error occurred while launching Lemon Squeezy checkout.');
       setLsLoading(false);
-    }
-  };
-
-  // Handle Instant Sandbox Direct Checkout (Mock DB)
-  const handleInstantSubmit = async (e) => {
-    e.preventDefault();
-    if (!email || !email.includes('@')) {
-      setError('Please provide a valid email address to receive your license key.');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const res = await fetch('/api/checkout/purchase', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tier,
-          customerEmail: email,
-          customerName: name || email.split('@')[0]
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to process purchase.');
-      }
-
-      setPurchasedKey(data);
-    } catch (err) {
-      setError(err.message || 'An unexpected error occurred during checkout.');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -360,191 +322,95 @@ function CheckoutContent() {
               </div>
             </div>
 
-            {/* Payment Gateway Form */}
+            {/* Payment Form (Lemon Squeezy) */}
             <div className="form-panel" style={{ padding: '32px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '18px', fontWeight: 700 }}>2. Checkout Gateway</h3>
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod('lemonsqueezy')}
-                    style={{
-                      fontSize: '11.5px',
-                      fontWeight: 700,
-                      padding: '5px 10px',
-                      borderRadius: '6px',
-                      border: paymentMethod === 'lemonsqueezy' ? '1px solid #facc15' : '1px solid var(--card-border)',
-                      background: paymentMethod === 'lemonsqueezy' ? 'rgba(250, 204, 21, 0.15)' : 'transparent',
-                      color: paymentMethod === 'lemonsqueezy' ? '#fef08a' : 'var(--text-muted)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    🍋 Lemon Squeezy
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod('instant')}
-                    style={{
-                      fontSize: '11.5px',
-                      fontWeight: 700,
-                      padding: '5px 10px',
-                      borderRadius: '6px',
-                      border: paymentMethod === 'instant' ? '1px solid var(--accent-emerald)' : '1px solid var(--card-border)',
-                      background: paymentMethod === 'instant' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-                      color: paymentMethod === 'instant' ? '#6ee7b7' : 'var(--text-muted)',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    ⚡ Instant Sandbox
-                  </button>
-                </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 700 }}>2. Customer & Payment Details</h3>
+                <span className="pill-badge emerald" style={{ fontSize: '10px', padding: '3px 8px' }}>
+                  🔒 256-Bit SSL
+                </span>
               </div>
 
-              {paymentMethod === 'lemonsqueezy' ? (
-                /* Lemon Squeezy Form */
-                <div>
-                  <div style={{
-                    background: 'rgba(250, 204, 21, 0.08)',
-                    border: '1px solid rgba(250, 204, 21, 0.25)',
+              <div style={{
+                background: 'rgba(250, 204, 21, 0.08)',
+                border: '1px solid rgba(250, 204, 21, 0.25)',
+                borderRadius: '8px',
+                padding: '10px 14px',
+                fontSize: '12px',
+                color: '#fef08a',
+                marginBottom: '20px',
+                lineHeight: 1.5
+              }}>
+                <span>🍋 <strong>Secure Checkout by Lemon Squeezy:</strong> Global Merchant of Record handling sales tax, cards, PayPal, and Apple Pay. Instant lifetime license delivery.</span>
+              </div>
+
+              <form onSubmit={handleLemonSqueezyCheckout}>
+                <div style={{ marginBottom: '16px' }}>
+                  <label className="input-label" htmlFor="ls-customer-email">Email Address (Key dispatched here)</label>
+                  <input
+                    type="email"
+                    id="ls-customer-email"
+                    className="input-field"
+                    placeholder="name@company.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: '20px' }}>
+                  <label className="input-label" htmlFor="ls-customer-name">Full Name / Organization</label>
+                  <input
+                    type="text"
+                    id="ls-customer-name"
+                    className="input-field"
+                    placeholder="Jane Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+
+                {error && (
+                  <div style={{ color: 'var(--accent-rose)', fontSize: '13px', marginBottom: '16px' }}>
+                    ⚠️ {error}
+                  </div>
+                )}
+
+                <div style={{ borderTop: '1px solid var(--card-border)', paddingTop: '16px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Total due today:</div>
+                    <div style={{ fontSize: '11px', color: 'var(--accent-emerald)', fontWeight: 600 }}>One-time payment • Lifetime access</div>
+                  </div>
+                  <span style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff' }}>{currentFormattedPrice}</span>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={lsLoading}
+                  className="btn"
+                  style={{
+                    width: '100%',
+                    padding: '14px',
+                    fontSize: '15px',
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #facc15 0%, #eab308 100%)',
+                    color: '#18181b',
+                    border: 'none',
+                    cursor: lsLoading ? 'not-allowed' : 'pointer',
                     borderRadius: '8px',
-                    padding: '10px 14px',
-                    fontSize: '12px',
-                    color: '#fef08a',
-                    marginBottom: '20px',
-                    lineHeight: 1.5
-                  }}>
-                    <span>🍋 <strong>Lemon Squeezy Merchant of Record:</strong> Handles global VAT/taxes, one-time card/PayPal/Apple Pay checkout, and instant key issuance.</span>
-                  </div>
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  {lsLoading ? 'Launching Lemon Squeezy...' : `🍋 Pay ${currentFormattedPrice} with Lemon Squeezy`}
+                </button>
 
-                  <form onSubmit={handleLemonSqueezyCheckout}>
-                    <div style={{ marginBottom: '16px' }}>
-                      <label className="input-label" htmlFor="ls-customer-email">Email Address (License key delivered here)</label>
-                      <input
-                        type="email"
-                        id="ls-customer-email"
-                        className="input-field"
-                        placeholder="name@company.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div style={{ marginBottom: '20px' }}>
-                      <label className="input-label" htmlFor="ls-customer-name">Full Name / Organization</label>
-                      <input
-                        type="text"
-                        id="ls-customer-name"
-                        className="input-field"
-                        placeholder="Jane Doe"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </div>
-
-                    {error && (
-                      <div style={{ color: 'var(--accent-rose)', fontSize: '13px', marginBottom: '16px' }}>
-                        ⚠️ {error}
-                      </div>
-                    )}
-
-                    <div style={{ borderTop: '1px solid var(--card-border)', paddingTop: '16px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div>
-                        <div style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Total due today:</div>
-                        <div style={{ fontSize: '11px', color: 'var(--accent-emerald)', fontWeight: 600 }}>One-time payment • Own forever</div>
-                      </div>
-                      <span style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff' }}>{currentFormattedPrice}</span>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={lsLoading}
-                      className="btn"
-                      style={{
-                        width: '100%',
-                        padding: '14px',
-                        fontSize: '15px',
-                        fontWeight: 700,
-                        background: 'linear-gradient(135deg, #facc15 0%, #eab308 100%)',
-                        color: '#18181b',
-                        border: 'none',
-                        cursor: lsLoading ? 'not-allowed' : 'pointer',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '8px'
-                      }}
-                    >
-                      {lsLoading ? 'Launching Lemon Squeezy...' : `🍋 Pay ${currentFormattedPrice} with Lemon Squeezy`}
-                    </button>
-                  </form>
-                </div>
-              ) : (
-                /* Instant Sandbox Payment */
-                <div>
-                  <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px dashed rgba(16, 185, 129, 0.3)', borderRadius: '8px', padding: '10px 14px', fontSize: '12px', color: '#34d399', marginBottom: '20px' }}>
-                    <span>🧪 <strong>Instant Demo Payment:</strong> Generates key directly in local database sandbox for testing.</span>
-                  </div>
-
-                  <form onSubmit={handleInstantSubmit}>
-                    <div style={{ marginBottom: '16px' }}>
-                      <label className="input-label" htmlFor="instant-customer-email">Email Address</label>
-                      <input
-                        type="email"
-                        id="instant-customer-email"
-                        className="input-field"
-                        placeholder="name@company.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div style={{ marginBottom: '16px' }}>
-                      <label className="input-label" htmlFor="instant-customer-name">Full Name / Organization</label>
-                      <input
-                        type="text"
-                        id="instant-customer-name"
-                        className="input-field"
-                        placeholder="Jane Doe"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </div>
-
-                    <div style={{ marginBottom: '24px' }}>
-                      <label className="input-label">Card Number (Simulated)</label>
-                      <input
-                        type="text"
-                        className="input-field"
-                        value={cardNumber}
-                        onChange={(e) => setCardNumber(e.target.value)}
-                      />
-                    </div>
-
-                    {error && (
-                      <div style={{ color: 'var(--accent-rose)', fontSize: '13px', marginBottom: '16px' }}>
-                        ⚠️ {error}
-                      </div>
-                    )}
-
-                    <div style={{ borderTop: '1px solid var(--card-border)', paddingTop: '16px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Total due today:</span>
-                      <span style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff' }}>{currentFormattedPrice}</span>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="btn btn-primary"
-                      style={{ width: '100%', padding: '14px', fontSize: '15px' }}
-                    >
-                      {loading ? 'Generating Secure Key...' : `Pay ${currentFormattedPrice} & Receive Lifetime Key`}
-                    </button>
-                  </form>
-                </div>
-              )}
+                <p style={{ textAlign: 'center', fontSize: '11.5px', color: 'var(--text-dim)', marginTop: '12px', marginBottom: 0 }}>
+                  Zero monthly subscriptions. 100% money-back guarantee.
+                </p>
+              </form>
             </div>
           </div>
         </div>
