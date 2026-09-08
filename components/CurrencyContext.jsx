@@ -17,6 +17,7 @@ const CurrencyContext = createContext({
 export function CurrencyProvider({ children }) {
   const [currency, setCurrencyState] = useState(DEFAULT_CURRENCY);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [dynamicPricing, setDynamicPricing] = useState(null);
 
   useEffect(() => {
     // 1. Instant local detection (localStorage or timezone)
@@ -36,6 +37,20 @@ export function CurrencyProvider({ children }) {
         })
         .catch(() => {});
     }
+
+    // 3. Fetch live dynamic pricing from Lemon Squeezy
+    fetch('/api/checkout/pricing')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success && data.pricing) {
+          setDynamicPricing(data);
+          // If store currency is configured (e.g. INR) and user has no manual override, align to store currency
+          if (!saved && data.currency && CURRENCIES[data.currency]) {
+            setCurrencyState(data.currency);
+          }
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const setCurrency = (code) => {
@@ -50,11 +65,24 @@ export function CurrencyProvider({ children }) {
   const currencyData = CURRENCIES[currency] || CURRENCIES.USD;
 
   const getPrice = (tier = 'pro', isAnchor = false) => {
+    // If selected display currency matches live Lemon Squeezy store currency, use live variant price
+    if (dynamicPricing?.pricing && dynamicPricing.currency === currency) {
+      const liveTier = dynamicPricing.pricing[tier] || dynamicPricing.pricing.pro;
+      if (liveTier) {
+        return isAnchor ? liveTier.anchor : liveTier.amount;
+      }
+    }
     const tierData = currencyData.pricing[tier] || currencyData.pricing.pro;
     return isAnchor ? tierData.anchor : tierData.amount;
   };
 
   const formatPrice = (tier = 'pro', isAnchor = false) => {
+    if (dynamicPricing?.pricing && dynamicPricing.currency === currency) {
+      const liveTier = dynamicPricing.pricing[tier] || dynamicPricing.pricing.pro;
+      if (liveTier) {
+        return isAnchor ? liveTier.anchorFormatted : liveTier.formatted;
+      }
+    }
     const amount = getPrice(tier, isAnchor);
     return formatAmount(amount, currency);
   };
@@ -69,7 +97,9 @@ export function CurrencyProvider({ children }) {
         getPrice,
         currencies: CURRENCIES,
         isPpp: Boolean(currencyData.isPpp),
-        isLoaded
+        isLoaded,
+        dynamicPricing,
+        isLiveLemonSqueezy: Boolean(dynamicPricing?.success)
       }}
     >
       {children}
