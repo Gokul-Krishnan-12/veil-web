@@ -3,7 +3,6 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Script from 'next/script';
 import { useCurrency } from '@/components/CurrencyContext';
 import CurrencySelector from '@/components/CurrencySelector';
 
@@ -13,37 +12,10 @@ function CheckoutContent() {
 
   const { formatPrice, isPpp } = useCurrency();
   const [tier, setTier] = useState(initialTier);
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [lsLoading, setLsLoading] = useState(false);
   const [verifyingOrder, setVerifyingOrder] = useState(false);
   const [error, setError] = useState('');
   const [purchasedKey, setPurchasedKey] = useState(null);
   const [copied, setCopied] = useState(false);
-
-  // Initialize Lemon.js event listener for overlay checkout completion
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.createLemonSqueezy?.();
-      window.LemonSqueezy?.Setup({
-        eventHandler: (event) => {
-          if (event?.event === 'Checkout.Success') {
-            const orderId = event?.data?.order?.id || event?.data?.id;
-            if (orderId) {
-              setVerifyingOrder(true);
-              fetch(`/api/checkout/order-status?order_id=${orderId}&tier=${tier}&email=${encodeURIComponent(email)}`)
-                .then(r => r.json())
-                .then(data => {
-                  if (data?.success) setPurchasedKey(data);
-                })
-                .catch(console.error)
-                .finally(() => setVerifyingOrder(false));
-            }
-          }
-        }
-      });
-    }
-  }, [tier, email]);
 
   // Update tier if query parameter changes
   useEffect(() => {
@@ -52,7 +24,7 @@ function CheckoutContent() {
     else if (qTier === 'pro') setTier('pro');
   }, [searchParams]);
 
-  // Check for return from Lemon Squeezy checkout: ?order_id=...&status=success
+  // Check for return from direct checkout: ?order_id=...&status=success
   useEffect(() => {
     const orderId = searchParams.get('order_id');
     const status = searchParams.get('status');
@@ -97,48 +69,6 @@ function CheckoutContent() {
   const seats = tier === 'enterprise' ? 30 : 3;
   const currentFormattedPrice = formatPrice(tier);
 
-  // Handle Lemon Squeezy Checkout
-  const handleLemonSqueezyCheckout = async (e) => {
-    if (e) e.preventDefault();
-
-    if (!email || !email.includes('@')) {
-      setError('Please provide a valid email address where your lifetime license key will be dispatched.');
-      return;
-    }
-
-    setLsLoading(true);
-    setError('');
-
-    try {
-      const res = await fetch('/api/checkout/lemonsqueezy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tier,
-          customerEmail: email,
-          customerName: name || email.split('@')[0]
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success || !data.checkoutUrl) {
-        throw new Error(data.error || 'Failed to initiate Lemon Squeezy checkout.');
-      }
-
-      // Check if Lemon.js overlay modal is available
-      if (typeof window !== 'undefined' && window.LemonSqueezy?.Url?.Open) {
-        window.LemonSqueezy.Url.Open(data.checkoutUrl);
-        setLsLoading(false);
-      } else {
-        // Fallback to hosted redirect
-        window.location.href = data.checkoutUrl;
-      }
-    } catch (err) {
-      setError(err.message || 'An error occurred while launching Lemon Squeezy checkout.');
-      setLsLoading(false);
-    }
-  };
-
   const copyToClipboard = () => {
     if (purchasedKey?.key) {
       navigator.clipboard.writeText(purchasedKey.key);
@@ -148,16 +78,16 @@ function CheckoutContent() {
   };
 
   return (
-    <div style={{ maxWidth: '980px', margin: '40px auto 80px', padding: '0 24px' }}>
+    <div style={{ maxWidth: '1040px', margin: '40px auto 80px', padding: '0 24px' }}>
       <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-        <div className="pill-badge emerald">🔒 Bank-Grade 256-Bit SSL Checkout</div>
-        <h1 style={{ fontSize: '36px', fontWeight: 800, marginTop: '12px' }}>
-          {purchasedKey ? 'Order Complete! Your License is Ready' : 'Complete Your Veil Lifetime Purchase'}
+        <div className="pill-badge emerald">🔒 100% Lifetime Privacy Access</div>
+        <h1 style={{ fontSize: '38px', fontWeight: 800, marginTop: '12px', letterSpacing: '-0.5px' }}>
+          {purchasedKey ? 'Order Complete! Your License is Ready' : 'Veil Lifetime License Pricing'}
         </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginTop: '6px' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginTop: '8px', maxWidth: '620px', margin: '8px auto 0' }}>
           {purchasedKey
             ? 'Your lifetime license key has been minted in our secure registry. Activate it below.'
-            : 'One-time payment only. Zero monthly fees. Instant cryptographic key generation.'}
+            : 'One-time payment only. Zero monthly subscriptions. Free updates forever.'}
         </p>
       </div>
 
@@ -166,7 +96,7 @@ function CheckoutContent() {
         <div className="feature-card" style={{ maxWidth: '580px', margin: '40px auto', padding: '48px 32px', textAlign: 'center', border: '1px solid var(--card-border-glow)' }}>
           <div style={{ fontSize: '48px', marginBottom: '20px', animation: 'spin 2s linear infinite' }}>⏳</div>
           <h2 style={{ fontSize: '22px', fontWeight: 800, marginBottom: '12px', color: '#ffffff' }}>
-            Confirming Payment with Lemon Squeezy...
+            Confirming Order Status...
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.6 }}>
             Settling your one-time payment and minting your cryptographic lifetime license key into the registry.
@@ -215,215 +145,211 @@ function CheckoutContent() {
           </div>
         </div>
       ) : (
-        /* Checkout Form */
+        /* Pricing & Plans View */
         <div>
           <div style={{
             background: 'rgba(16, 185, 129, 0.08)',
             border: '1px solid rgba(16, 185, 129, 0.25)',
             borderRadius: '12px',
-            padding: '12px 18px',
-            marginBottom: '24px',
-            fontSize: '13px',
+            padding: '14px 20px',
+            marginBottom: '28px',
+            fontSize: '13.5px',
             color: '#6ee7b7',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: '8px'
+            gap: '12px'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>🎉</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '18px' }}>🎉</span>
               <span><strong>100% One-Time Lifetime Access:</strong> Pay once, own forever with <strong>0 monthly subscriptions</strong>.</span>
             </div>
-            <span style={{ fontSize: '11px', background: 'rgba(16, 185, 129, 0.2)', padding: '2px 8px', borderRadius: '999px', fontWeight: 700 }}>
+            <span style={{ fontSize: '11px', background: 'rgba(16, 185, 129, 0.2)', padding: '3px 10px', borderRadius: '999px', fontWeight: 700 }}>
               0 RECURRING CHARGES
             </span>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Currency:</span>
-              <CurrencySelector compact />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Display Currency:</span>
+            <CurrencySelector compact />
+          </div>
+
+          {/* Pricing Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+            {/* Personal Pro Card */}
+            <div
+              onClick={() => setTier('pro')}
+              style={{
+                background: tier === 'pro' ? 'rgba(99, 102, 241, 0.1)' : 'rgba(255, 255, 255, 0.02)',
+                border: tier === 'pro' ? '2px solid var(--accent-violet)' : '1px solid var(--card-border)',
+                borderRadius: '16px',
+                padding: '28px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                position: 'relative'
+              }}
+            >
+              {tier === 'pro' && (
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '20px',
+                  background: 'var(--accent-violet)',
+                  color: '#ffffff',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  padding: '2px 10px',
+                  borderRadius: '999px',
+                  letterSpacing: '0.5px'
+                }}>
+                  SELECTED
+                </div>
+              )}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', margin: 0 }}>Personal Lifetime</h3>
+                <span className="pill-badge emerald" style={{ fontSize: '10px', padding: '2px 8px' }}>
+                  {isPpp ? 'PARITY' : 'LIFETIME'}
+                </span>
+              </div>
+              <p style={{ color: 'var(--text-muted)', fontSize: '13px', marginBottom: '16px', minHeight: '36px' }}>
+                For individual engineers, founders, and professionals recording demos and client calls.
+              </p>
+
+              <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '16px', fontWeight: 600 }}>
+                  {formatPrice('pro', true)}
+                </span>
+                <span style={{ fontSize: '36px', fontWeight: 800, color: '#ffffff' }}>
+                  {formatPrice('pro')}
+                </span>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>one-time</span>
+              </div>
+
+              <div style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#34d399', borderRadius: '6px', padding: '6px 12px', fontSize: '12px', fontWeight: 600, display: 'inline-block', marginBottom: '20px' }}>
+                ✓ 3 Browser Seat Activations
+              </div>
+
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '13px', color: 'var(--text-muted)', lineHeight: 2 }}>
+                <li>✓ Unlimited element & text blurring</li>
+                <li>✓ Automated PII masking (Cards, Emails, API Keys)</li>
+                <li>✓ Live WebRTC screen share auto-detection</li>
+                <li>✓ Regional drag-to-blur boxes</li>
+                <li>✓ SPA persistent domain blur rules</li>
+                <li>✓ Cryptographically signed lifetime key</li>
+                <li>✓ Free updates forever</li>
+              </ul>
+            </div>
+
+            {/* Enterprise Card */}
+            <div
+              onClick={() => setTier('enterprise')}
+              style={{
+                background: tier === 'enterprise' ? 'rgba(99, 102, 241, 0.1)' : 'rgba(255, 255, 255, 0.02)',
+                border: tier === 'enterprise' ? '2px solid var(--accent-violet)' : '1px solid var(--card-border)',
+                borderRadius: '16px',
+                padding: '28px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                position: 'relative'
+              }}
+            >
+              {tier === 'enterprise' && (
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '20px',
+                  background: 'var(--accent-violet)',
+                  color: '#ffffff',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  padding: '2px 10px',
+                  borderRadius: '999px',
+                  letterSpacing: '0.5px'
+                }}>
+                  SELECTED
+                </div>
+              )}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', margin: 0 }}>Enterprise Lifetime</h3>
+                <span className="pill-badge emerald" style={{ fontSize: '10px', padding: '2px 8px' }}>
+                  BEST FOR TEAMS
+                </span>
+              </div>
+              <p style={{ color: 'var(--text-muted)', fontSize: '13px', marginBottom: '16px', minHeight: '36px' }}>
+                For sales engineering teams, customer support hubs, and companies protecting sensitive client data.
+              </p>
+
+              <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '16px', fontWeight: 600 }}>
+                  {formatPrice('enterprise', true)}
+                </span>
+                <span style={{ fontSize: '36px', fontWeight: 800, color: '#ffffff' }}>
+                  {formatPrice('enterprise')}
+                </span>
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>one-time</span>
+              </div>
+
+              <div style={{ background: 'rgba(99, 102, 241, 0.15)', color: 'var(--accent-cyan)', borderRadius: '6px', padding: '6px 12px', fontSize: '12px', fontWeight: 600, display: 'inline-block', marginBottom: '20px' }}>
+                ✓ 30 Team Browser Seats
+              </div>
+
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '13px', color: 'var(--text-muted)', lineHeight: 2 }}>
+                <li>✓ Up to 30 team seats with a single key</li>
+                <li>✓ Centralized team seat management</li>
+                <li>✓ 1-Click Revoke & Reissue API support</li>
+                <li>✓ Tab privacy disguise engine</li>
+                <li>✓ Dedicated priority support</li>
+                <li>✓ GDPR, HIPAA & SOC2 compliance ready</li>
+                <li>✓ Free lifetime updates</li>
+              </ul>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
-            {/* Plan Selector & Details */}
-            <div className="form-panel" style={{ padding: '32px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '20px' }}>1. Select Your License Tier</h3>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '24px' }}>
-                <button
-                  type="button"
-                  onClick={() => setTier('pro')}
-                  style={{
-                    background: tier === 'pro' ? 'rgba(99, 102, 241, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                    border: tier === 'pro' ? '2px solid var(--accent-violet)' : '1px solid var(--card-border)',
-                    borderRadius: '10px',
-                    padding: '16px',
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    color: 'inherit'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)' }}>PERSONAL PRO</div>
-                    <span className="pill-badge emerald" style={{ fontSize: '9px', padding: '1px 5px' }}>
-                      {isPpp ? 'PARITY' : 'LIFETIME'}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '22px', fontWeight: 800, color: '#ffffff', margin: '6px 0', display: 'flex', alignItems: 'baseline', gap: '6px', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '14px', textDecoration: 'line-through', color: 'var(--text-dim)', fontWeight: 600 }}>
-                      {formatPrice('pro', true)}
-                    </span>
-                    <span>{formatPrice('pro')}</span>
-                  </div>
-                  <div style={{ fontSize: '11.5px', color: 'var(--accent-emerald)' }}>3 Browser Seats</div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setTier('enterprise')}
-                  style={{
-                    background: tier === 'enterprise' ? 'rgba(99, 102, 241, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                    border: tier === 'enterprise' ? '2px solid var(--accent-violet)' : '1px solid var(--card-border)',
-                    borderRadius: '10px',
-                    padding: '16px',
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    color: 'inherit'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)' }}>ENTERPRISE</div>
-                    <span className="pill-badge emerald" style={{ fontSize: '9px', padding: '1px 5px' }}>
-                      {isPpp ? 'PARITY' : 'LIFETIME'}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '22px', fontWeight: 800, color: '#ffffff', margin: '6px 0', display: 'flex', alignItems: 'baseline', gap: '6px', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '14px', textDecoration: 'line-through', color: 'var(--text-dim)', fontWeight: 600 }}>
-                      {formatPrice('enterprise', true)}
-                    </span>
-                    <span>{formatPrice('enterprise')}</span>
-                  </div>
-                  <div style={{ fontSize: '11.5px', color: 'var(--accent-cyan)' }}>30 Team Seats</div>
-                </button>
+          {/* Selected Plan Summary & Order Action */}
+          <div className="feature-card" style={{ padding: '32px', border: '1px solid var(--card-border-glow)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', borderBottom: '1px solid var(--card-border)', paddingBottom: '20px', marginBottom: '20px' }}>
+              <div>
+                <div style={{ fontSize: '13px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.8px', fontWeight: 700 }}>
+                  Selected Plan
+                </div>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>
+                  {tier === 'enterprise' ? 'Enterprise Lifetime License' : 'Personal Pro Lifetime License'}
+                  <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-muted)', marginLeft: '10px' }}>
+                    ({seats} Browser Seats)
+                  </span>
+                </div>
               </div>
 
-              <div style={{ background: 'rgba(255, 255, 255, 0.02)', borderRadius: '10px', padding: '16px', border: '1px solid var(--card-border)' }}>
-                <h4 style={{ fontSize: '14px', fontWeight: 700, marginBottom: '10px', color: '#ffffff' }}>What is included:</h4>
-                <ul style={{ listStyle: 'none', padding: 0, fontSize: '13px', color: 'var(--text-muted)', lineHeight: 2 }}>
-                  <li>✓ Cryptographically signed lifetime key</li>
-                  <li>✓ Bound to {seats} seat{seats > 1 ? 's' : ''} in encrypted registry</li>
-                  <li>✓ Zero monthly fees or recurring subscription renewals</li>
-                  <li>✓ Global tax / VAT handled automatically via Merchant of Record</li>
-                  <li>✓ Free updates forever</li>
-                </ul>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Total One-Time:</div>
+                <div style={{ fontSize: '32px', fontWeight: 800, color: '#ffffff' }}>
+                  {currentFormattedPrice}
+                </div>
               </div>
             </div>
 
-            {/* Payment Form (Lemon Squeezy) */}
-            <div className="form-panel" style={{ padding: '32px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <h3 style={{ fontSize: '18px', fontWeight: 700 }}>2. Customer & Payment Details</h3>
-                <span className="pill-badge emerald" style={{ fontSize: '10px', padding: '3px 8px' }}>
-                  🔒 256-Bit SSL
-                </span>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-muted)', maxWidth: '520px' }}>
+                🔒 <strong>Cryptographic License Key:</strong> Grants instant access in the Veil Chrome Extension. No recurring subscription or monthly fees.
               </div>
 
-              <div style={{
-                background: 'rgba(250, 204, 21, 0.08)',
-                border: '1px solid rgba(250, 204, 21, 0.25)',
-                borderRadius: '8px',
-                padding: '10px 14px',
-                fontSize: '12px',
-                color: '#fef08a',
-                marginBottom: '20px',
-                lineHeight: 1.5
-              }}>
-                <span>🍋 <strong>Secure Checkout by Lemon Squeezy:</strong> Global Merchant of Record handling sales tax, cards, PayPal, and Apple Pay. Instant lifetime license delivery.</span>
-              </div>
-
-              <form onSubmit={handleLemonSqueezyCheckout}>
-                <div style={{ marginBottom: '16px' }}>
-                  <label className="input-label" htmlFor="ls-customer-email">Email Address (Key dispatched here)</label>
-                  <input
-                    type="email"
-                    id="ls-customer-email"
-                    className="input-field"
-                    placeholder="name@company.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-
-                <div style={{ marginBottom: '20px' }}>
-                  <label className="input-label" htmlFor="ls-customer-name">Full Name / Organization</label>
-                  <input
-                    type="text"
-                    id="ls-customer-name"
-                    className="input-field"
-                    placeholder="Jane Doe"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-
-                {error && (
-                  <div style={{ color: 'var(--accent-rose)', fontSize: '13px', marginBottom: '16px' }}>
-                    ⚠️ {error}
-                  </div>
-                )}
-
-                <div style={{ borderTop: '1px solid var(--card-border)', paddingTop: '16px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <div style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Total due today:</div>
-                    <div style={{ fontSize: '11px', color: 'var(--accent-emerald)', fontWeight: 600 }}>One-time payment • Lifetime access</div>
-                  </div>
-                  <span style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff' }}>{currentFormattedPrice}</span>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={lsLoading}
-                  className="btn"
-                  style={{
-                    width: '100%',
-                    padding: '14px',
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #facc15 0%, #eab308 100%)',
-                    color: '#18181b',
-                    border: 'none',
-                    cursor: lsLoading ? 'not-allowed' : 'pointer',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px'
-                  }}
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <a
+                  href={`mailto:support@useveil.com?subject=Veil%20${tier === 'enterprise' ? 'Enterprise' : 'Pro'}%20License%20Inquiry&body=Hi%20Veil%20Team,%0A%0AI%20would%20like%20to%20acquire%20a%20Veil%20${tier === 'enterprise' ? 'Enterprise' : 'Personal%20Pro'}%20Lifetime%20License%20(${currentFormattedPrice}).%0A%0APlease%20provide%20payment%20instructions%20and%20invoice%20details.%0A%0AThank%20you!`}
+                  className="btn btn-primary"
+                  style={{ padding: '12px 24px', fontSize: '14px' }}
                 >
-                  {lsLoading ? 'Launching Lemon Squeezy...' : `🍋 Pay ${currentFormattedPrice} with Lemon Squeezy`}
-                </button>
-
-                <p style={{ textAlign: 'center', fontSize: '11.5px', color: 'var(--text-dim)', marginTop: '12px', marginBottom: 0 }}>
-                  Zero monthly subscriptions. 100% money-back guarantee.
-                </p>
-              </form>
+                  ✉️ Inquire / Purchase Key ({currentFormattedPrice})
+                </a>
+                <Link href="/pricing" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '14px' }}>
+                  Compare All Features
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       )}
-      <Script
-        src="https://assets.lemonsqueezy.com/lemon.js"
-        strategy="afterInteractive"
-        onLoad={() => {
-          if (typeof window !== 'undefined' && window.createLemonSqueezy) {
-            window.createLemonSqueezy();
-          }
-        }}
-      />
     </div>
   );
 }
