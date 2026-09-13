@@ -336,7 +336,7 @@ function CheckoutContent() {
 
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 <a
-                  href={`mailto:support@useveil.com?subject=Veil%20${tier === 'enterprise' ? 'Enterprise' : 'Pro'}%20License%20Inquiry&body=Hi%20Veil%20Team,%0A%0AI%20would%20like%20to%20acquire%20a%20Veil%20${tier === 'enterprise' ? 'Enterprise' : 'Personal%20Pro'}%20Lifetime%20License%20(${currentFormattedPrice}).%0A%0APlease%20provide%20payment%20instructions%20and%20invoice%20details.%0A%0AThank%20you!`}
+                  href={`mailto:gokulkrish80@gmail.com?subject=Veil%20${tier === 'enterprise' ? 'Enterprise' : 'Pro'}%20License%20Inquiry&body=Hi%20Veil%20Team,%0A%0AI%20would%20like%20to%20acquire%20a%20Veil%20${tier === 'enterprise' ? 'Enterprise' : 'Personal%20Pro'}%20Lifetime%20License%20(${currentFormattedPrice}).%0A%0APlease%20provide%20payment%20instructions%20and%20invoice%20details.%0A%0AThank%20you!`}
                   className="btn btn-primary"
                   style={{ padding: '12px 24px', fontSize: '14px' }}
                 >

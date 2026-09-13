@@ -29,6 +29,7 @@ export default function Footer() {
             <h4>Resources</h4>
             <Link href="/docs">Documentation</Link>
             <Link href="/docs#installation">Extension Setup</Link>
+            <a href="mailto:gokulkrish80@gmail.com">Support (gokulkrish80@gmail.com)</a>
             <Link href="/api/health" target="_blank">API Health Status</Link>
           </div>
           <div className="footer-col">
