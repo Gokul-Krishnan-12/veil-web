@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
   ];
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '40px auto 90px', padding: '0 24px', color: 'var(--text-main)' }}>
+    <div className="privacy-page-wrap" style={{ maxWidth: '1000px', margin: '0 auto', padding: '48px 24px 80px', color: 'var(--text-main)' }}>
       {/* Header Banner */}
       <div style={{ textAlign: 'center', marginBottom: '48px' }}>
         <div style={{

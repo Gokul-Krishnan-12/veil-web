@@ -59,7 +59,7 @@ export default function HomePricing() {
             <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> Free updates forever</li>
           </ul>
 
-          <Link href="/checkout?tier=pro" className="btn btn-secondary" style={{ width: '100%' }}>
+          <Link href="/checkout?tier=pro" className="btn btn-secondary" style={{ width: '100%' }} suppressHydrationWarning>
             Buy Personal Key (3 Browsers — {proPrice})
           </Link>
         </div>
@@ -71,10 +71,10 @@ export default function HomePricing() {
           <p className="pricing-desc">For sales engineering teams, customer support hubs, and organizations protecting customer data.</p>
           
           <div className="pricing-price-box">
-            <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '22px', fontWeight: 600, marginRight: '8px' }}>
+            <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '22px', fontWeight: 600, marginRight: '8px' }} suppressHydrationWarning>
               {entAnchor}
             </span>
-            <span className="price-amount" style={{ fontSize: '44px', fontWeight: 800, color: '#ffffff' }}>
+            <span className="price-amount" style={{ fontSize: '44px', fontWeight: 800, color: '#ffffff' }} suppressHydrationWarning>
               {entPrice}
             </span>
             <span className="price-period" style={{ display: 'block', fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
@@ -92,7 +92,7 @@ export default function HomePricing() {
             <li className="pricing-feature-item"><span className="pricing-check-icon">✓</span> GDPR, HIPAA & SOC2 compliance ready</li>
           </ul>
 
-          <Link href="/checkout?tier=enterprise" className="btn btn-primary" style={{ width: '100%' }}>
+          <Link href="/checkout?tier=enterprise" className="btn btn-primary" style={{ width: '100%' }} suppressHydrationWarning>
             Buy Enterprise Key ({entPrice} — 30 Seats)
           </Link>
         </div>

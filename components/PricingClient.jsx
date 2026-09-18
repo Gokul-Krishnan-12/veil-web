@@ -14,7 +14,7 @@ export default function PricingClient() {
   const entAnchor = formatPrice('enterprise', true);
 
   return (
-    <div className="pricing-page" style={{ maxWidth: '1100px', margin: '40px auto 80px', padding: '0 24px' }}>
+    <div className="pricing-page" style={{ maxWidth: '1100px', margin: '0 auto 80px', padding: '48px 24px 80px' }}>
       <div className="section-header" style={{ textAlign: 'center', marginBottom: '36px' }}>
         <div className="pill-badge emerald">100% Lifetime Access • Zero Monthly Subscriptions</div>
         <h1 className="section-title" style={{ fontSize: '42px', marginTop: '12px' }}>
